@@ -76,11 +76,6 @@ public class Block : MonoBehaviour
         if (other.gameObject.tag == "Border") { belowBorder = false; }
     }
 
-    void OnMouseDown()
-    {
-        Destroy(gameObject);
-    }
-
 
 
 
