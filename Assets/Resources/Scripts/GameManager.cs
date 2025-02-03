@@ -19,8 +19,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate=60;
         FirstSpawner();
-        Spawner();
+        //Spawner();
     }
 
     // Update is called once per frame
@@ -31,19 +32,35 @@ public class GameManager : MonoBehaviour
 
     private void FirstSpawner()
     {
-        float x = -5.41f;
-        float y = 4.67f;
+        float x = 0;
+        float y = 19;
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 18; j++)
+            {
+                Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>();
+                block.SetRow(j);
+                block.SetType(Random.Range(0,6));
+                y -= 1;
+            }
+            x += 1;
+            y = 19f;
+        }
+
+        /*float x1 = -5.41f;
+        float y1 = 13.67f;
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>().SetRow(j+9);
-                //Debug.Log(j + 9);
-                y -= 1;
+                Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x1, y1, 1), Quaternion.identity).GetComponent<Block>();
+                block.SetRow(j);
+                block.SetType(Random.Range(0,6));
+                y1 -= 1;
             }
-            x += 1;
-            y = 4.67f;
-        }
+            x1 += 1;
+            y1 = 13.67f;
+        }*/
     }
     private void Spawner()
     {
@@ -53,7 +70,9 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < 9; j++)
             {
-                Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>().SetRow(j);
+                Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>();
+                block.SetRow(j);
+                block.SetType(Random.Range(0,6));
                 y -= 1;
             }
             x += 1;
