@@ -34,9 +34,9 @@ public class GameManager : MonoBehaviour
     {
         float x = 0;
         float y = 17f;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < 18; j++)
             {
                 Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>();
                 block.SetRow(j);

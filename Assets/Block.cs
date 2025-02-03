@@ -7,6 +7,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public List<GameObject> chain = new List<GameObject>();
+    
     public int row = 0;
     public int type = 0;
     public bool belowBlock = true;
