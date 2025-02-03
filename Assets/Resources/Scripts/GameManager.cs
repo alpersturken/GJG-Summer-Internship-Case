@@ -33,10 +33,10 @@ public class GameManager : MonoBehaviour
     private void FirstSpawner()
     {
         float x = 0;
-        float y = 30;
-        for (int i = 0; i < 9; i++)
+        float y = 17f;
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < 18; j++)
+            for (int j = 0; j < 9; j++)
             {
                 Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>();
                 block.SetRow(j);
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 y -= 1;
             }
             x += 1;
-            y = 30f;
+            y = 17f;
         }
 
         /*float x1 = -5.41f;
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         float y = 13.67f;
         for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < 18; j++)
             {
                 Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(x, y, 1), Quaternion.identity).GetComponent<Block>();
                 block.SetRow(j);

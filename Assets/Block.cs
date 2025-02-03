@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    //float[] rows = new float[18] { 13.67f, 12.67f, 11.67f, 10.67f, 9.67f, 8.67f, 7.67f, 6.67f, 5.67f, 4.67f, 3.67f, 2.67f, 1.67f, 0.67f, -0.33f, -1.33f, -2.33f, -3.33f };
-    //public float[] rows = new float[18] {17, 16, 15f, 14.33f, 0.67f, 1.67f, 2.67f, 3.67f, 4.67f, 5.67f, 6.67f, 7.67f, 8.67f, 9.67f, 10.67f, 11.67f, 12.67f, 13.67f};
+    public List<GameObject> chain = new List<GameObject>();
     public int row = 0;
     public int type = 0;
     public bool belowBlock = true;
@@ -21,8 +23,6 @@ public class Block : MonoBehaviour
         {
             transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
         }
-
-
     }
 
     public void SetRow(int _row)
@@ -57,26 +57,74 @@ public class Block : MonoBehaviour
         }
     }
 
+    public void AddChain(List<GameObject> newChain)
+    {
+        Debug.Log(gameObject.transform.position);
+        foreach (GameObject block in newChain)
+        {
+            if (!chain.Contains(block) && type == block.GetComponent<Block>().type) { chain.Add(block); }
+            if (!chain.Contains(gameObject)) { chain.Add(gameObject); }
+        }
+
+    }
+
+
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Gatcha!");
+
+
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = true; transform.position = new Vector3(transform.position.x, (float)Math.Round(transform.position.y), 1);
+
         }
-        if (other.gameObject.tag == "Border") { belowBorder = true; transform.position = new Vector3(transform.position.x, 0, 1);}
+
+
+        if (other.gameObject.tag == "Border") { belowBorder = true; transform.position = new Vector3(transform.position.x, 0, 1); }
     }
-    //void OnTriggerEnter2D(Collider2D other) { if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y) { Debug.Log("Block entered!"); if (belowBlock == false) { transform.position = new Vector3(transform.position.x, row, 1); } belowBlock = true; } if (other.gameObject.tag == "Border") { belowBorder = true; } }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
-           belowBlock = false;
+            belowBlock = false;
         }
         if (other.gameObject.tag == "Border") { belowBorder = false; }
+        Debug.Log("Chain cleaning!");
+        chain.Clear();
     }
 
+    void OnTriggerStay2D(Collider2D other)
+    {
+        Debug.Log(1);
+        if (other.gameObject.tag == "Block" && other.transform.position.y <= 8 && type == other.GetComponent<Block>().type )
+        {
+            Debug.Log(2);
+            if (belowBorder == true || belowBlock == true)
+            {
+                Debug.Log(3);
+                if(!chain.Contains(other.gameObject)){chain.Add(other.gameObject);}
+                Debug.Log(4);
+                other.gameObject.GetComponent<Block>().AddChain(chain);
+                Debug.Log(5);
+                Debug.Log(transform.position + " - " + other.transform.position);
+            }
+        }
+    }
 
+    void OnMouseDown()
+    {
+        if (chain.Count >= 2)
+        {
+            chain.Remove(gameObject);
+            foreach (GameObject block in chain.ToList())
+            {
+                Destroy(block);
+            }
+            Destroy(gameObject);
+        }
+    }
 
 
 
