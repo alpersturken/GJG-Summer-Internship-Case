@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    float[] rows = new float[18] { 13.67f, 12.67f, 11.67f, 10.67f, 9.67f, 8.67f, 7.67f, 6.67f, 5.67f, 4.67f, 3.67f, 2.67f, 1.67f, 0.67f, -0.33f, -1.33f, -2.33f, -3.33f };
+    //float[] rows = new float[18] { 13.67f, 12.67f, 11.67f, 10.67f, 9.67f, 8.67f, 7.67f, 6.67f, 5.67f, 4.67f, 3.67f, 2.67f, 1.67f, 0.67f, -0.33f, -1.33f, -2.33f, -3.33f };
     //public float[] rows = new float[18] {17, 16, 15f, 14.33f, 0.67f, 1.67f, 2.67f, 3.67f, 4.67f, 5.67f, 6.67f, 7.67f, 8.67f, 9.67f, 10.67f, 11.67f, 12.67f, 13.67f};
     public int row = 0;
     public int type = 0;
@@ -11,7 +11,6 @@ public class Block : MonoBehaviour
     public bool belowBorder = false;
     void Start()
     {
-        //SetRow();
 
     }
 
@@ -22,7 +21,6 @@ public class Block : MonoBehaviour
         {
             transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
         }
-        //else {if(belowBlock == false){} if(belowBlock == true || belowBorder == true) {transform.position = new Vector3(transform.position.x, row, 1);}}*/
 
 
     }
@@ -59,15 +57,6 @@ public class Block : MonoBehaviour
         }
     }
 
-    /*void OnTriggerStay(Collider other)
-    {
-        Debug.Log("Gatcha!");
-        if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
-        {
-            belowBlock = true; transform.position = new Vector3(transform.position.x, (float)Math.Round(transform.position.y), 1);
-        }
-        if (true) { belowBorder = true; }
-    }*/
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Gatcha!");
@@ -82,7 +71,7 @@ public class Block : MonoBehaviour
     {
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
-            Debug.Log("Block exit!"); belowBlock = false; //if (!belowBorder) { row--; }
+           belowBlock = false;
         }
         if (other.gameObject.tag == "Border") { belowBorder = false; }
     }

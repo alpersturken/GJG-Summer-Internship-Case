@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     private void FirstSpawner()
     {
         float x = 0;
-        float y = 19;
+        float y = 30;
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 18; j++)
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 y -= 1;
             }
             x += 1;
-            y = 19f;
+            y = 30f;
         }
 
         /*float x1 = -5.41f;
