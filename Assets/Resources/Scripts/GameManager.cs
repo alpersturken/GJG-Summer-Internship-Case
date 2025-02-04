@@ -45,12 +45,16 @@ public class GameManager : MonoBehaviour
             }
             if (deadlock) {Shuffle(); deadlock = false; shuffleCooldown = 0; }
             afkTimer += 1*Time.deltaTime;
-            if(afkTimer >= 5){isAFK = true;}
+            if(afkTimer >= 15){isAFK = true;}
         }
     }
 
     private void FirstSpawner(int x, int y)
     {
+        foreach (GameObject block in GameObject.FindGameObjectsWithTag("Block"))
+        {
+            Destroy(block);
+        }
         for (int i = 0; i < x; i++)
         {
 
@@ -71,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void Shuffle()
     {
+        NotAFK();
         Debug.Log("Shuffled!");
         foreach (GameObject trigger in GameObject.FindGameObjectsWithTag("Trigger"))
         {
