@@ -16,58 +16,30 @@ public class Block : MonoBehaviour
     public bool belowBorder = false;
 
     private GameManager gameManager;
-    private Transform icon;
-    private SpriteRenderer iconSR;
+    private SpriteRenderer icon;
     void Awake()
     {
-        icon = transform.GetChild(0);
-        iconSR = icon.GetComponent<SpriteRenderer>();
+        icon = GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
-    void Start() {
-        iconSR.sprite = gameManager.icons[type]; 
-        icon.localScale = new Vector3(0.3f, 0.3f, 1);
     }
 
     void Update()
     {
         if (belowBorder == false && belowBlock == false)
         {
-            transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
+            transform.position -= new Vector3(0, 5f * Time.deltaTime, 0);
         }
-        if(chain.Count < 4){ iconSR.sprite = gameManager.icons[type]; icon.transform.localScale = new Vector3(0.3f, 0.3f, 1);}
-        else if(chain.Count < 6){ iconSR.sprite = gameManager.icons[7]; icon.transform.localScale = new Vector3(0.3f, 0.3f, 1);}
-        else if(chain.Count < 8){ iconSR.sprite = gameManager.icons[8]; icon.transform.localScale = new Vector3(0.1f, 0.1f, 1);}
-        else{ iconSR.sprite = gameManager.icons[9]; icon.transform.localScale = new Vector3(0.1f, 0.1f, 1);}
+        if(chain.Count < 4){ icon.sprite = gameManager.icons[type*4];}
+        else if(chain.Count < 6){ icon.sprite = gameManager.icons[type*4 + 1];}
+        else if(chain.Count < 8){ icon.sprite = gameManager.icons[type*4 + 2];}
+        else{ icon.sprite = gameManager.icons[type*4 + 3];}
     }
 
 
-    public void SetType(int i)
+    public void SetType(int _tpye)
     {
-        type = i;
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        switch (type)
-        {
-            case 0:
-                spriteRenderer.color = Color.blue;
-                break;
-            case 1:
-                spriteRenderer.color = Color.red;
-                break;
-            case 2:
-                spriteRenderer.color = Color.green;
-                break;
-            case 3:
-                spriteRenderer.color = Color.yellow;
-                break;
-            case 4:
-                spriteRenderer.color = Color.magenta;
-                break;
-            case 5:
-                spriteRenderer.color = Color.white;
-                break;
-        }
-        iconSR.sprite = gameManager.icons[type];
+        type = _tpye;
+        icon.sprite = gameManager.icons[type*4 + 3];
     }
 
     public void AddChain(List<GameObject> newChain)

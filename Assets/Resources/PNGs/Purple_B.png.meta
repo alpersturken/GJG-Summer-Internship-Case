@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 520341acdb40aee438300d02a6a92b2f
+guid: 501183d136518b94c88e5f6b8a8d332d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5198912348047545067
-    second: 3306671_0
+      213: -2693315669398477313
+    second: Purple_B_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 3306671_0
+      name: Purple_B_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 112
-        width: 512
-        height: 288
+        x: 16
+        y: 0
+        width: 225
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: be214cb4c3f362840800000000000000
-      internalID: 5198912348047545067
+      spriteID: ff5a2812bab6f9ad0800000000000000
+      internalID: -2693315669398477313
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      3306671_0: 5198912348047545067
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
