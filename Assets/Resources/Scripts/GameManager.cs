@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public List<Sprite> icons = new List<Sprite>();
     void Start()
     {
         Application.targetFrameRate = 60;
         FirstSpawner(9, 12);
-
-        //Spawner();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void FirstSpawner(int x, int y)
     {

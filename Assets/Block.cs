@@ -12,12 +12,17 @@ public class Block : MonoBehaviour
     public int type = 0;
     public bool belowBlock = true;
     public bool belowBorder = false;
-    void Start()
-    {
 
+    private GameManager gameManager;
+    private Transform icon;
+    private SpriteRenderer iconSR;
+    void Awake()
+    {
+        icon = transform.GetChild(0);
+        iconSR = icon.GetComponent<SpriteRenderer>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (belowBorder == false && belowBlock == false)
@@ -56,6 +61,7 @@ public class Block : MonoBehaviour
                 spriteRenderer.color = Color.white;
                 break;
         }
+        iconSR.sprite = gameManager.icons[type];
     }
 
     public void AddChain(List<GameObject> newChain)
@@ -113,6 +119,10 @@ public class Block : MonoBehaviour
                     {
                         if (!chain.Contains(other.gameObject)) { chain.Add(other.gameObject); }
                         other.gameObject.GetComponent<Block>().AddChain(chain);
+                        if (chain.Count >= 8) { iconSR.sprite = (Sprite)gameManager.icons[9]; icon.localScale = new Vector3(0.1f, 0.1f, 1);}
+                        else if (chain.Count >= 6) { iconSR.sprite = (Sprite)gameManager.icons[8]; icon.localScale = new Vector3(0.1f, 0.1f, 1);}
+                        else if (chain.Count >= 4) { iconSR.sprite = (Sprite)gameManager.icons[7]; icon.localScale = new Vector3(0.3f, 0.3f, 1);}
+                        else { iconSR.sprite = (Sprite)gameManager.icons[type]; icon.localScale = new Vector3(0.3f, 0.3f, 1);}
                     }
                 }
             }
