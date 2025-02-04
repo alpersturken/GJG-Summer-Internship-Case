@@ -6,14 +6,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Block : MonoBehaviour
-{   
-    
+{
+
     public List<GameObject> chain = new List<GameObject>();
 
     public int score = 0;
     public int type = 0;
     public bool belowBlock = true;
     public bool belowBorder = false;
+    private float spriteChangerTimer = 0;
 
     private GameManager gameManager;
     private SpriteRenderer icon;
@@ -25,21 +26,19 @@ public class Block : MonoBehaviour
 
     void Update()
     {
+        spriteChangerTimer += 1 * Time.deltaTime;
         if (belowBorder == false && belowBlock == false)
         {
             transform.position -= new Vector3(0, 5f * Time.deltaTime, 0);
         }
-        if(chain.Count < 4){ icon.sprite = gameManager.icons[type*4];}
-        else if(chain.Count < 6){ icon.sprite = gameManager.icons[type*4 + 1];}
-        else if(chain.Count < 8){ icon.sprite = gameManager.icons[type*4 + 2];}
-        else{ icon.sprite = gameManager.icons[type*4 + 3];}
+        if (spriteChangerTimer >= 0.1f) { ChangeSprite(); spriteChangerTimer = 0; }
     }
 
 
     public void SetType(int _tpye)
     {
         type = _tpye;
-        icon.sprite = gameManager.icons[type*4 + 3];
+        ChangeSprite();
     }
 
     public void AddChain(List<GameObject> newChain)
@@ -58,6 +57,14 @@ public class Block : MonoBehaviour
         {
             block.GetComponent<Block>().chain.Clear();
         }
+    }
+
+    private void ChangeSprite()
+    {
+        if (chain.Count < 4) { icon.sprite = gameManager.icons[type * 4]; }
+        else if (chain.Count < 6) { icon.sprite = gameManager.icons[type * 4 + 1]; }
+        else if (chain.Count < 8) { icon.sprite = gameManager.icons[type * 4 + 2]; }
+        else { icon.sprite = gameManager.icons[type * 4 + 3]; }
     }
 
 
@@ -118,7 +125,8 @@ public class Block : MonoBehaviour
         }
     }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         gameManager.DecreaseBlockCount();
     }
 
