@@ -7,7 +7,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public List<GameObject> chain = new List<GameObject>();
-    
+
     public int row = 0;
     public int type = 0;
     public bool belowBlock = true;
@@ -23,6 +23,7 @@ public class Block : MonoBehaviour
         if (belowBorder == false && belowBlock == false)
         {
             transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
+            chain.Clear();
         }
     }
 
@@ -60,7 +61,6 @@ public class Block : MonoBehaviour
 
     public void AddChain(List<GameObject> newChain)
     {
-        Debug.Log(gameObject.transform.position);
         foreach (GameObject block in newChain)
         {
             if (!chain.Contains(block) && type == block.GetComponent<Block>().type) { chain.Add(block); }
@@ -74,7 +74,7 @@ public class Block : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-
+        chain.Clear();
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = true; transform.position = new Vector3(transform.position.x, (float)Math.Round(transform.position.y), 1);
@@ -87,29 +87,27 @@ public class Block : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
+        chain.Clear();
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = false;
         }
         if (other.gameObject.tag == "Border") { belowBorder = false; }
-        Debug.Log("Chain cleaning!");
-        chain.Clear();
+        
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        Debug.Log(1);
-        if (other.gameObject.tag == "Block" && other.transform.position.y <= 8 && type == other.GetComponent<Block>().type )
+        if (other.gameObject.tag == "Block")
         {
-            Debug.Log(2);
-            if (belowBorder == true || belowBlock == true)
+            if(other.transform.position == transform.position){Destroy(gameObject);}
+            if (other.transform.position.y <= 8 && type == other.GetComponent<Block>().type)
             {
-                Debug.Log(3);
-                if(!chain.Contains(other.gameObject)){chain.Add(other.gameObject);}
-                Debug.Log(4);
-                other.gameObject.GetComponent<Block>().AddChain(chain);
-                Debug.Log(5);
-                Debug.Log(transform.position + " - " + other.transform.position);
+                if (belowBorder == true || belowBlock == true)
+                {
+                    if (!chain.Contains(other.gameObject)) { chain.Add(other.gameObject); }
+                    other.gameObject.GetComponent<Block>().AddChain(chain);
+                }
             }
         }
     }
