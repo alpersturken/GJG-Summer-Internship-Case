@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Block : MonoBehaviour
-{
+{   
+    
     public List<GameObject> chain = new List<GameObject>();
 
-    public int row = 0;
+    public int score = 0;
     public int type = 0;
     public bool belowBlock = true;
     public bool belowBorder = false;
@@ -31,10 +33,6 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void SetRow(int _row)
-    {
-        row = _row;
-    }
 
     public void SetType(int i)
     {
@@ -81,6 +79,7 @@ public class Block : MonoBehaviour
             block.GetComponent<Block>().chain.Clear();
         }
     }
+
 
 
 
@@ -133,6 +132,7 @@ public class Block : MonoBehaviour
     {
         if (chain.Count >= 2)
         {
+            gameManager.updateScore(chain.Count);
             chain.Remove(gameObject);
             foreach (GameObject block in chain.ToList())
             {
@@ -140,6 +140,7 @@ public class Block : MonoBehaviour
             }
             Destroy(gameObject);
         }
+        
     }
 
 
