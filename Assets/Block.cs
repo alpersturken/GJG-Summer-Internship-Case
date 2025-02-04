@@ -23,7 +23,6 @@ public class Block : MonoBehaviour
         if (belowBorder == false && belowBlock == false)
         {
             transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
-            chain.Clear();
         }
     }
 
@@ -69,38 +68,43 @@ public class Block : MonoBehaviour
 
     }
 
+    public void ClearChains()
+    {
+        foreach (GameObject block in chain.ToList())
+        {
+            block.GetComponent<Block>().chain.Clear();
+        }
+    }
+
 
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-        chain.Clear();
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = true; transform.position = new Vector3(transform.position.x, (float)Math.Round(transform.position.y), 1);
 
         }
-
-
         if (other.gameObject.tag == "Border") { belowBorder = true; transform.position = new Vector3(transform.position.x, 0, 1); }
+        ClearChains();
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        chain.Clear();
+        
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = false;
         }
         if (other.gameObject.tag == "Border") { belowBorder = false; }
-        
+        ClearChains();
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.tag == "Block")
         {
-            if(other.transform.position == transform.position){Destroy(gameObject);}
+            if (other.transform.position == transform.position) { Destroy(gameObject); }
             if (other.transform.position.y <= 8 && type == other.GetComponent<Block>().type)
             {
                 if (belowBorder == true || belowBlock == true)

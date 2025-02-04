@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 171476886}
   - component: {fileID: 171476885}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Wallpaper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -798,26 +798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f80c837243d0cd4c9459ebd4b3453c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows:
-  - 4.67
-  - 3.67
-  - 2.67
-  - 1.67
-  - 0.67
-  - -0.33
-  - -1.33
-  - -2.33
-  - -3.33
-  columns:
-  - -5.41
-  - -4.41
-  - -3.41
-  - -2.41
-  - -1.41
-  - -0.41
-  - 0.59
-  - 1.59
-  - 2.59
 --- !u!1 &1894977264
 GameObject:
   m_ObjectHideFlags: 0
