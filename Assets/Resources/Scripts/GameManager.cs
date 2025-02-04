@@ -10,14 +10,16 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private bool deadlock = false;
+    [SerializeField] private int blockCount = 0;
+    [SerializeField] private int maxBlockCount = 0;
+    [SerializeField] private int chainCount = 0;
+    [SerializeField] private float shuffleCooldown = 0;
     public List<Sprite> icons = new List<Sprite>();
     private int column = 9;
     private int row = 12;
     private int score = 0;
-    private bool deadlock = false;
-    private int blockCount = 0;
-    private int maxBlockCount = 0;
-    private int chainCount = 0;
+
 
     void Awake()
     {
@@ -31,20 +33,21 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (shuffleCooldown <= 3.2f) { shuffleCooldown += 0.8f * Time.deltaTime; }
         Debug.Log(blockCount);
         if (Input.GetKeyDown(KeyCode.Space))
         {
             deadlock = true;
         }
-        if (blockCount >= maxBlockCount)
+        if (blockCount == maxBlockCount && shuffleCooldown >= 3)
         {
             foreach (GameObject _block in GameObject.FindGameObjectsWithTag("Block"))
             {
                 //if (_block.GetComponent<Block>().chain.Count >= 2) {chainCount++;}
-                if (_block.GetComponent<Block>().chain.Count >= 2) {Debug.Log(_block.GetComponent<Block>().chain.Count); deadlock = false; break;}
+                if (_block.GetComponent<Block>().chain.Count >= 2) { Debug.Log(_block.GetComponent<Block>().chain.Count); deadlock = false; break; }
                 deadlock = true;
             }
-            if (deadlock) { Shuffle(); deadlock = false; }
+            if (deadlock) { Shuffle(); deadlock = false; shuffleCooldown = 0; }
         }
     }
 
@@ -52,12 +55,11 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < x; i++)
         {
-            for (int j = 0; j < y; j++)
-            {
-                Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(i, y - j - 1, 1), Quaternion.identity).GetComponent<Block>();
-                IncreaseBlockCount();
-                block.SetType(Random.Range(0, 6));
-            }
+
+            Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(i, row, 1), Quaternion.identity).GetComponent<Block>();
+            IncreaseBlockCount();
+            block.SetType(Random.Range(0, 6));
+
             Instantiate(Resources.Load("Prefabs/Trigger"), new Vector3(i, y - 1, 1), Quaternion.identity);
         }
     }
@@ -69,24 +71,31 @@ public class GameManager : MonoBehaviour
         block.SetType(Random.Range(0, 6));
     }
 
+    [System.Obsolete]
     public void Shuffle()
     {
         Debug.Log("Shuffled!");
+        foreach (GameObject trigger in GameObject.FindGameObjectsWithTag("Trigger"))
+        {
+            Destroy(trigger);
+        }
         foreach (GameObject block in GameObject.FindGameObjectsWithTag("Block"))
         {
             Destroy(block);
         }
-
+        for (int i = 0; i < column; i++)
+        {
+            Instantiate(Resources.Load("Prefabs/Trigger"), new Vector3(i, row - 1, 1), Quaternion.identity);
+        }
         int a = Random.RandomRange(0, column - 3);
         int b = Random.RandomRange(0, 6);
         for (int j = 0; j < column; j++)
         {
-            Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(j, row - 1.8f, 1), Quaternion.identity).GetComponent<Block>();
+            Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(j, row + 1, 1), Quaternion.identity).GetComponent<Block>();
             IncreaseBlockCount();
-            if (j >= a && j < a + 3) { block.SetType(b);}
+            if (j >= a && j < a + 3) { block.SetType(b); }
             else block.SetType(Random.Range(0, 6));
         }
-
     }
 
     public void updateScore(int _blockCount) { score += (int)Mathf.Pow(_blockCount, 2f) / 2; scoreText.text = score.ToString(); }

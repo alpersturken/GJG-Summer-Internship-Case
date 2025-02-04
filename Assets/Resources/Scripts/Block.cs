@@ -24,6 +24,10 @@ public class Block : MonoBehaviour
         iconSR = icon.GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
+    void Start() {
+        iconSR.sprite = gameManager.icons[type]; 
+        icon.localScale = new Vector3(0.3f, 0.3f, 1);
+    }
 
     void Update()
     {
@@ -31,6 +35,10 @@ public class Block : MonoBehaviour
         {
             transform.position -= new Vector3(0, 3f * Time.deltaTime, 0);
         }
+        if(chain.Count < 4){ iconSR.sprite = gameManager.icons[type]; icon.transform.localScale = new Vector3(0.3f, 0.3f, 1);}
+        else if(chain.Count < 6){ iconSR.sprite = gameManager.icons[7]; icon.transform.localScale = new Vector3(0.3f, 0.3f, 1);}
+        else if(chain.Count < 8){ iconSR.sprite = gameManager.icons[8]; icon.transform.localScale = new Vector3(0.1f, 0.1f, 1);}
+        else{ iconSR.sprite = gameManager.icons[9]; icon.transform.localScale = new Vector3(0.1f, 0.1f, 1);}
     }
 
 
@@ -109,7 +117,7 @@ public class Block : MonoBehaviour
     {
         if (other.gameObject.tag == "Block")
         {
-            //if (other.transform.position == transform.position) { Destroy(gameObject); }
+            if (other.transform.position == transform.position) { Destroy(gameObject); }
             if (other.transform.position.y <= 8 && type == other.GetComponent<Block>().type)
             {
                 if (belowBorder == true || belowBlock == true)
@@ -118,10 +126,6 @@ public class Block : MonoBehaviour
                     {
                         if (!chain.Contains(other.gameObject)) { chain.Add(other.gameObject); }
                         other.gameObject.GetComponent<Block>().AddChain(chain);
-                        if (chain.Count >= 8) { iconSR.sprite = (Sprite)gameManager.icons[9]; icon.localScale = new Vector3(0.1f, 0.1f, 1);}
-                        else if (chain.Count >= 6) { iconSR.sprite = (Sprite)gameManager.icons[8]; icon.localScale = new Vector3(0.1f, 0.1f, 1);}
-                        else if (chain.Count >= 4) { iconSR.sprite = (Sprite)gameManager.icons[7]; icon.localScale = new Vector3(0.3f, 0.3f, 1);}
-                        else { iconSR.sprite = (Sprite)gameManager.icons[type]; icon.localScale = new Vector3(0.3f, 0.3f, 1);}
                     }
                 }
             }
