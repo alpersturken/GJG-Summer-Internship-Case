@@ -109,7 +109,7 @@ public class Block : MonoBehaviour
     {
         if (other.gameObject.tag == "Block")
         {
-            if (other.transform.position == transform.position) { Destroy(gameObject); }
+            //if (other.transform.position == transform.position) { Destroy(gameObject); }
             if (other.transform.position.y <= 8 && type == other.GetComponent<Block>().type)
             {
                 if (belowBorder == true || belowBlock == true)
@@ -140,9 +140,11 @@ public class Block : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        
     }
 
+    void OnDestroy() {
+        gameManager.DecreaseBlockCount();
+    }
 
 
 }
