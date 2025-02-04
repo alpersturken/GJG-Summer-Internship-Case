@@ -94,7 +94,7 @@ public class Block : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Block")
+        if (other.gameObject.tag == "Block" && !gameManager.GetAFKStatus())
         {
             if (other.transform.position == transform.position) { Destroy(gameObject); }
             if (other.transform.position.y <= 8 && type == other.GetComponent<Block>().type)
@@ -113,6 +113,7 @@ public class Block : MonoBehaviour
 
     void OnMouseDown()
     {
+        gameManager.NotAFK();
         if (chain.Count >= 2)
         {
             gameManager.updateScore(chain.Count);

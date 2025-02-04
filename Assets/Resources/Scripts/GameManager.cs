@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     private int column = 9;
     private int row = 12;
     private int score = 0;
+    [SerializeField] private bool isAFK = false;
+    private float afkTimer = 0;
 
 
     void Awake()
@@ -34,20 +36,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (shuffleCooldown <= 3.2f) { shuffleCooldown += 0.8f * Time.deltaTime; }
-        Debug.Log(blockCount);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            deadlock = true;
-        }
         if (blockCount == maxBlockCount && shuffleCooldown >= 3)
         {
             foreach (GameObject _block in GameObject.FindGameObjectsWithTag("Block"))
             {
-                //if (_block.GetComponent<Block>().chain.Count >= 2) {chainCount++;}
-                if (_block.GetComponent<Block>().chain.Count >= 2) { Debug.Log(_block.GetComponent<Block>().chain.Count); deadlock = false; break; }
+                if (_block.GetComponent<Block>().chain.Count >= 2) {deadlock = false; break; }
                 deadlock = true;
             }
-            if (deadlock) { Shuffle(); deadlock = false; shuffleCooldown = 0; }
+            if (deadlock) {Shuffle(); deadlock = false; shuffleCooldown = 0; }
+            afkTimer += 1*Time.deltaTime;
+            if(afkTimer >= 5){isAFK = true;}
         }
     }
 
@@ -71,7 +69,6 @@ public class GameManager : MonoBehaviour
         block.SetType(Random.Range(0, 6));
     }
 
-    [System.Obsolete]
     public void Shuffle()
     {
         Debug.Log("Shuffled!");
@@ -87,8 +84,8 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(Resources.Load("Prefabs/Trigger"), new Vector3(i, row - 1, 1), Quaternion.identity);
         }
-        int a = Random.RandomRange(0, column - 3);
-        int b = Random.RandomRange(0, 6);
+        int a = Random.Range(0, column - 3);
+        int b = Random.Range(0, 6);
         for (int j = 0; j < column; j++)
         {
             Block block = Instantiate(Resources.Load("Prefabs/Blocks/Block01"), new Vector3(j, row + 1, 1), Quaternion.identity).GetComponent<Block>();
@@ -98,9 +95,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void NotAFK(){isAFK = false; afkTimer = 0;}
+
     public void updateScore(int _blockCount) { score += (int)Mathf.Pow(_blockCount, 2f) / 2; scoreText.text = score.ToString(); }
 
     public void IncreaseBlockCount() { blockCount++; }
     public void DecreaseBlockCount() { blockCount--; }
+
+    public bool GetAFKStatus(){return isAFK;}
 
 }
