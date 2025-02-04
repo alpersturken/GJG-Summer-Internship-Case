@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         FirstSpawner(9, 12);
-        
+
         //Spawner();
     }
 
@@ -29,8 +29,9 @@ public class GameManager : MonoBehaviour
                 block.SetRow(j);
                 block.SetType(Random.Range(0, 6));
             }
-
+            Instantiate(Resources.Load("Prefabs/Trigger"), new Vector3(i, y - 1, 1), Quaternion.identity);
         }
+
 
         /*float x1 = -5.41f;
         float y1 = 13.67f;

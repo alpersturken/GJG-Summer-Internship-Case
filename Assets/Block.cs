@@ -91,7 +91,7 @@ public class Block : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        
+
         if (other.gameObject.tag == "Block" && transform.position.x == other.gameObject.transform.position.x && transform.position.y > other.gameObject.transform.position.y)
         {
             belowBlock = false;
@@ -109,8 +109,11 @@ public class Block : MonoBehaviour
             {
                 if (belowBorder == true || belowBlock == true)
                 {
-                    if (!chain.Contains(other.gameObject)) { chain.Add(other.gameObject); }
-                    other.gameObject.GetComponent<Block>().AddChain(chain);
+                    if (transform.position.x == other.transform.position.x || transform.position.y == other.transform.position.y)
+                    {
+                        if (!chain.Contains(other.gameObject)) { chain.Add(other.gameObject); }
+                        other.gameObject.GetComponent<Block>().AddChain(chain);
+                    }
                 }
             }
         }
