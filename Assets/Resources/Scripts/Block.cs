@@ -14,7 +14,6 @@ public class Block : MonoBehaviour
     public int type = 0;
     public bool belowBlock = true;
     public bool belowBorder = false;
-    private float spriteChangerTimer = 0;
 
     private GameManager gameManager;
     private SpriteRenderer icon;
@@ -26,12 +25,11 @@ public class Block : MonoBehaviour
 
     void Update()
     {
-        spriteChangerTimer += 1 * Time.deltaTime;
         if (belowBorder == false && belowBlock == false)
         {
             transform.position -= new Vector3(0, 5f * Time.deltaTime, 0);
         }
-        if (spriteChangerTimer >= 0.1f) { ChangeSprite(); spriteChangerTimer = 0; }
+        if (gameManager.GetSpriteChange()) { ChangeSprite(); }
     }
 
 

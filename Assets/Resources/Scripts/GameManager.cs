@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     [SerializeField] private bool isAFK = false;
     private float afkTimer = 0;
+    private float spriteChangerTimer = 0;
+    private bool changeSprite = false;
 
 
     void Awake()
@@ -35,6 +37,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        changeSprite = false;
+        spriteChangerTimer += 1 * Time.deltaTime;
+         if (spriteChangerTimer >= 0.1f) { changeSprite = true; spriteChangerTimer = 0; }
         if (shuffleCooldown <= 3.2f) { shuffleCooldown += 0.8f * Time.deltaTime; }
         if (blockCount == maxBlockCount && shuffleCooldown >= 3)
         {
@@ -108,5 +113,6 @@ public class GameManager : MonoBehaviour
     public void DecreaseBlockCount() { blockCount--; }
 
     public bool GetAFKStatus(){return isAFK;}
+    public bool GetSpriteChange(){return changeSprite;}
 
 }
